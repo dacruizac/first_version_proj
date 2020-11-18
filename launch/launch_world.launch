@@ -1,0 +1,176 @@
+<launch>
+	
+	<include file="$(find gazebo_ros)/launch/empty_world.launch">
+		<arg name="world_name" value="$(find first_version_proj)/worlds/second_world.world" />
+		<arg name="paused" default="false" />
+		<arg name="use_sim_time" default="true" />
+		<arg name="gui" default="true" />
+		<arg name="headless" default="false" />
+		<arg name="debug" default="false" />
+	</include>
+
+    <group ns="Kwad">
+
+        <arg name="x" default="1.0"/>
+        <arg name="y" default="-4.3337"/>
+        <arg name="z" default="0.01"/>
+        <arg name="roll" default="0.0"/>
+        <arg name="pitch" default="0.0"/>
+        <arg name="yaw" default="-1.5969"/>
+        <arg name="robot_name" value="drone"/>
+		
+		<param name="robot_description" command="$(find xacro)xacro '$(find first_version_proj)/urdf/Kwad.xacro'" />
+		
+		<!--node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-param robot_description -urdf -model Kwad" /-->
+		
+        <node pkg="gazebo_ros" type="spawn_model" name="spawn_$(arg robot_name)"
+            args="-x $(arg x) -y $(arg y) -z $(arg z)
+                -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)
+                -urdf -param robot_description 
+                -model $(arg robot_name)"
+                respawn="false">
+        </node>
+
+
+		<rosparam file="$(find first_version_proj)/config/Kwad_control.yaml" command="load" ns="/Kwad" />
+		
+		<node name="control_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="--namespace=/Kwad joint_state_controller joint_motor_controller" />
+		
+		<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">		
+			<param name="publish_frequency" type="double" value="5.0" />
+		</node>
+	</group>
+
+    <group ns="Obs1">
+		
+        <arg name="x" default="-1.0"/>
+        <arg name="y" default="-4.47"/>
+        <arg name="z" default="0.01"/>
+        <arg name="roll" default="0.0"/>
+        <arg name="pitch" default="0.0"/>
+        <arg name="yaw" default="-1.5969"/>
+        <arg name="robot_name" value="obst1"/>
+
+		<param name="robot_description" command="$(find xacro)xacro '$(find first_version_proj)/urdf/Obstacle1.urdf'" />
+		
+		<!--node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-param robot_description -urdf -model Kwad" /-->
+
+        <node pkg="gazebo_ros" type="spawn_model" name="spawn_$(arg robot_name)"
+            args="-x $(arg x) -y $(arg y) -z $(arg z)
+                -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)
+                -urdf -param robot_description 
+                -model $(arg robot_name)"
+                respawn="false">
+        </node>
+
+        <rosparam file="$(find first_version_proj)/config/obs_control.yaml" command="load" ns="/Obs1" />
+
+        <node name="control_spawner_$(arg robot_name)" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="--namespace=/Obs1 joint_state_controller joint_motor_controller" />
+
+		<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+			<!--<remap from="/joint_states" to="/Kwad/joint_states" />-->		
+			<param name="publish_frequency" type="double" value="5.0" />
+		</node>
+	</group>
+
+
+    <group ns="Obs2">
+		
+        <arg name="x" default="-4.95"/>
+        <arg name="y" default="-1.0"/>
+        <arg name="z" default="0.01"/>
+        <arg name="roll" default="0.0"/>
+        <arg name="pitch" default="0.0"/>
+        <arg name="yaw" default="0.0"/>
+        <arg name="robot_name" value="obst2"/>
+
+		<param name="robot_description" command="$(find xacro)xacro '$(find first_version_proj)/urdf/Obstacle1.urdf'" />
+		
+		<!--node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-param robot_description -urdf -model Kwad" /-->
+
+        <node pkg="gazebo_ros" type="spawn_model" name="spawn_$(arg robot_name)"
+            args="-x $(arg x) -y $(arg y) -z $(arg z)
+                -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)
+                -urdf -param robot_description 
+                -model $(arg robot_name)"
+                respawn="false">
+        </node>
+
+        <rosparam file="$(find first_version_proj)/config/obs_control.yaml" command="load" ns="/Obs2" />
+
+        <node name="control_spawner_$(arg robot_name)" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="--namespace=/Obs2 joint_state_controller joint_motor_controller" />
+		
+		<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+			<!--<remap from="/joint_states" to="/Kwad/joint_states" />-->		
+			<param name="publish_frequency" type="double" value="5.0" />
+		</node>
+	</group>
+
+
+    <group ns="Obs3">
+		
+        <arg name="x" default="0.0"/>
+        <arg name="y" default="1.4"/>
+        <arg name="z" default="0.01"/>
+        <arg name="roll" default="0.0"/>
+        <arg name="pitch" default="0.0"/>
+        <arg name="yaw" default="1.56"/>
+        <arg name="robot_name" value="obst3"/>
+
+		<param name="robot_description" command="$(find xacro)xacro '$(find first_version_proj)/urdf/Obstacle1.urdf'" />
+		
+		<!--node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-param robot_description -urdf -model Kwad" /-->
+
+        <node pkg="gazebo_ros" type="spawn_model" name="spawn_$(arg robot_name)"
+            args="-x $(arg x) -y $(arg y) -z $(arg z)
+                -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)
+                -urdf -param robot_description 
+                -model $(arg robot_name)"
+                respawn="false">
+        </node>
+		
+        <rosparam file="$(find first_version_proj)/config/obs_control.yaml" command="load" ns="/Obs3" />
+
+        <node name="control_spawner_$(arg robot_name)" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="--namespace=/Obs3 joint_state_controller joint_motor_controller" />
+
+		<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+			<!--<remap from="/joint_states" to="/Kwad/joint_states" />-->		
+			<param name="publish_frequency" type="double" value="5.0" />
+		</node>
+	</group>
+
+
+    <group ns="Obs4">
+		
+        <arg name="x" default="4.08"/>
+        <arg name="y" default="4.07"/>
+        <arg name="z" default="0.01"/>
+        <arg name="roll" default="0.0"/>
+        <arg name="pitch" default="0.0"/>
+        <arg name="yaw" default="-2.1318"/>
+        <arg name="robot_name" value="obst4"/>
+
+		<param name="robot_description" command="$(find xacro)xacro '$(find first_version_proj)/urdf/Obstacle1.urdf'" />
+		
+		<!--node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-param robot_description -urdf -model Kwad" /-->
+
+        <node pkg="gazebo_ros" type="spawn_model" name="spawn_$(arg robot_name)"
+            args="-x $(arg x) -y $(arg y) -z $(arg z)
+                -R $(arg roll) -P $(arg pitch) -Y $(arg yaw)
+                -urdf -param robot_description 
+                -model $(arg robot_name)"
+                respawn="false">
+        </node>
+
+        <rosparam file="$(find first_version_proj)/config/obs_control.yaml" command="load" ns="/Obs4" />
+
+        <node name="control_spawner_$(arg robot_name)" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="--namespace=/Obs4 joint_state_controller joint_motor_controller" />
+		
+		<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+			<!--<remap from="/joint_states" to="/Kwad/joint_states" />-->		
+			<param name="publish_frequency" type="double" value="5.0" />
+		</node>
+	</group>
+	
+		
+</launch>

@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+
+	<model name="obstacle">
+        <!--tatic>true</static-->
+		<!-- Give the base link a unique name -->
+		<link name="base">
+
+			<!-- Offset the base -->
+			<pose>0 0 0.0 0 0 0</pose>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+
+			<!-- Visual Properties -->
+			<collision name="collision">
+				<pose>0 0.0 0.0 0 0 0</pose> 
+				<geometry>
+					<mesh>
+						<uri>model://obstacle_1/meshes/model.dae</uri>
+					</mesh>
+				</geometry>
+			</collision>
+
+			<!-- Visual Properties -->
+			<visual name="visual">
+            <pose>0 0.0 0.0 0 0 0</pose> 
+				<geometry>
+					<mesh>
+						<uri>model://obstacle_1/meshes/model.dae</uri>
+					</mesh>
+				</geometry>
+				<material>
+					<script>
+						<uri>file://media/materials/scripts/gazebo.material</uri>
+                        <name>Gazebo/Red</name>
+					</script>
+                    <!--script>
+						<uri>model://plane_race_course/materials/scripts</uri>
+						<uri>model://plane_race_course/materials/textures</uri>
+						<name>ex_plane/plane</name>
+					</script-->
+					<shader type='vertex'>
+						<normal_map>__default__</normal_map>
+					</shader>
+					<ambient> 1 1 1 1</ambient>
+					<diffuse> 1 1 1 1</diffuse>
+					<specular>1 1 1 1</specular>
+					<emissive>0 0 0 1</emissive>
+				</material>
+			</visual>
+
+		</link>
+
+	</model>
+
+</sdf>

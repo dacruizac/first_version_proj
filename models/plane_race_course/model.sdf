@@ -1,0 +1,111 @@
+<?xml version="1.0" ?>
+<sdf version="1.5">
+
+	<model name="granite_plane">
+        <static>true</static>
+		<!-- Give the base link a unique name -->
+		<link name="base">
+
+			<!-- Offset the base -->
+			<pose>0 0 0.0 0 0 0</pose>
+			<enable_wind>0</enable_wind>
+			<kinematic>0</kinematic>
+
+			<!-- Visual Properties -->
+			<collision name="collision">
+				<pose>0 0.0 0.0 0 0 0</pose> 
+				<geometry>
+					<!--
+					<mesh>
+						<uri>model://dog_sdf_version/meshes/Pawpatrolgood_scaled.dae</uri>
+					</mesh>
+					-->
+					<plane>
+                        <normal>0 0 1</normal>
+                        <size>40 40</size>
+                    </plane>
+					
+				</geometry>
+                <surface>
+                    <friction>
+                        <ode>
+                            <mu>1</mu>
+                            <mu2>1</mu2>
+                        </ode>
+                    </friction>
+                </surface>
+			</collision>
+
+			<!-- Visual Properties -->
+			<visual name="visual">
+            <pose>0 0.0 -0.001 0 0 0</pose> 
+				<geometry>
+					<plane>
+                        <normal>0 0 1</normal>
+                        <size>100 100</size>
+                    </plane>
+				</geometry>
+				<material>
+					<!--script>
+						<uri>file://media/materials/scripts/gazebo.material</uri>
+                        <name>Gazebo/Runway</name>
+					</script-->
+                    <script>
+						<uri>model://plane_race_course/materials/scripts</uri>
+						<uri>model://plane_race_course/materials/textures</uri>
+						<name>ex_plane/plane</name>
+					</script>
+					<shader type='vertex'>
+						<normal_map>__default__</normal_map>
+					</shader>
+					<ambient> 1 1 1 1</ambient>
+					<diffuse> 1 1 1 1</diffuse>
+					<specular>1 1 1 1</specular>
+					<emissive>0 0 0 1</emissive>
+				</material>
+			</visual>
+            <!--visual name="visual2">
+                <pose> 0 0 0.5 0 0 0 </pose>
+                <geometry>
+                    <polyline>
+                        <point>-0.5 -0.5</point>
+                        <point>-0.5 0.5</point>
+                        <point>0.5 0.5</point>
+                        <point>0.5 -0.5</point>
+                        <height>1</height>
+                    </polyline>
+                </geometry>
+            </visual-->
+            <visual name="visual2">
+                <pose>0 0.0 0.0 0 0 0</pose> 
+				<geometry>
+					<plane>
+                        <normal>0 0 1</normal>
+                        <size>10 10</size>
+                    </plane>
+				</geometry>
+				<material>
+                    <!--script>
+						<uri>file://media/materials/scripts/gazebo.material</uri>
+                        <name>Gazebo/BlueTransparent</name>
+					</script-->
+                    <script>
+						<uri>model://plane_race_course/materials/scripts</uri>
+						<uri>model://plane_race_course/materials/textures</uri>
+						<name>ex_plane/race</name>
+					</script>
+					<shader type='vertex'>
+						<normal_map>__default__</normal_map>
+					</shader>
+					<!--ambient> 1 1 0 1</ambient>
+					<diffuse> 1 0 0 1</diffuse>
+					<specular>1 0 0 1</specular>
+					<emissive>0 0 0 1</emissive-->
+				</material>
+            </visual>
+
+		</link>
+
+	</model>
+
+</sdf>

@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<robot name="robot_name">
+
+    <link name="base_footprint"/> <!-- base_footprint marco de referencia inercial-->
+
+    <link name="base_link">
+        <visual >
+            <origin xyz="0.0 0.0 0.01" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="0.2" length="0.02"/>
+            </geometry>
+            <material name="Green">
+                <color rgba="0.0 1.0 0.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 0.01" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="0.2" length="0.02"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1.0"/>
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+        </inertial>
+    </link>
+
+    <link name="obst">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="1.0 0.1 0.1"/>
+            </geometry>
+            <material name="Red">
+                <color rgba="1.0 0.0 0.0 1.0"/>
+            </material>
+        </visual>
+        <visual>
+            <origin xyz="0.45 0.0 0.25" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="0.1 0.1 0.4"/>
+            </geometry>
+            <material name="Red">
+                <color rgba="1.0 0.0 0.0 1.0"/>
+            </material>
+        </visual>
+        <visual>
+            <origin xyz="-0.45 0.0 0.25" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="0.1 0.1 0.4"/>
+            </geometry>
+            <material name="Red">
+                <color rgba="1.0 0.0 0.0 1.0"/>
+            </material>
+        </visual>
+        <visual>
+            <origin xyz="0.0 0.0 0.5" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="1.0 0.1 0.1"/>
+            </geometry>
+            <material name="Red">
+                <color rgba="1.0 0.0 0.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="1.0 0.1 0.1"/>
+            </geometry>
+        </collision>
+        <collision>
+            <origin xyz="0.45 0.0 0.25" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="0.1 0.1 0.4"/>
+            </geometry>
+        </collision>
+        <collision>
+            <origin xyz="-0.45 0.0 0.25" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="0.1 0.1 0.4"/>
+            </geometry>
+        </collision>
+        <collision>
+            <origin xyz="0.0 0.0 0.5" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <box size="1.0 0.1 0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="1.0"/>
+            <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001"/>
+        </inertial>
+    </link>
+
+    <gazebo reference="base_link">
+		<material>Gazebo/Green</material>
+	</gazebo>
+
+    <gazebo reference="obst">
+		<material>Gazebo/Green</material>
+	</gazebo>
+
+    <joint name="fixed_joint" type="fixed">
+        <!--origin xyz="0.0 0.0 0.0102" rpy="0.0 0.0 0.0"/-->
+        <parent link="base_footprint"/>
+        <child link="base_link"/>
+    </joint>
+    
+    <joint name="joint_mov" type="prismatic">
+        <parent link="base_link"/>
+        <child link="obst"/>
+        <origin xyz="0 0 1.5" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+        <limit effort="300" velocity="1" lower="-0.5" upper="1"/>
+        <dynamics damping="0.7"/>
+    </joint>
+
+    <transmission name="tran1">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="joint_mov">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="motor1">
+        <!--hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface-->
+        <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    
+    <gazebo>
+        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+        </plugin>
+    </gazebo>
+
+</robot>
