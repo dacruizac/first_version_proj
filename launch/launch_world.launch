@@ -9,7 +9,8 @@
 		<arg name="debug" default="false" />
 	</include>
 
-    <group ns="Kwad">
+
+    <group ns="Parrot">
 
         <arg name="x" default="1.0"/>
         <arg name="y" default="-4.3337"/>
@@ -17,11 +18,12 @@
         <arg name="roll" default="0.0"/>
         <arg name="pitch" default="0.0"/>
         <arg name="yaw" default="-1.5969"/>
-        <arg name="robot_name" value="drone"/>
+
+        <arg name="robot_name" value="drone_parrot"/>
 		
-		<param name="robot_description" command="$(find xacro)xacro '$(find first_version_proj)/urdf/Kwad.xacro'" />
+		<param name="robot_description" command="$(find xacro)xacro '$(find first_version_proj)/urdf/parrot.xacro'" />
 		
-		<!--node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-param robot_description -urdf -model Kwad" /-->
+		<!--node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-param robot_description -urdf -model Parrot" /-->
 		
         <node pkg="gazebo_ros" type="spawn_model" name="spawn_$(arg robot_name)"
             args="-x $(arg x) -y $(arg y) -z $(arg z)
@@ -30,12 +32,11 @@
                 -model $(arg robot_name)"
                 respawn="false">
         </node>
-
-
-		<rosparam file="$(find first_version_proj)/config/Kwad_control.yaml" command="load" ns="/Kwad" />
 		
-		<node name="control_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="--namespace=/Kwad joint_state_controller joint_motor_controller" />
+        <rosparam file="$(find first_version_proj)/config/Kwad_control.yaml" command="load" ns="/Parrot" />
 		
+		<node name="control_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="--namespace=/Parrot joint_state_controller joint_motor_controller" />
+
 		<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">		
 			<param name="publish_frequency" type="double" value="5.0" />
 		</node>
