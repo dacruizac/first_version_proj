@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
-<robot>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
+	<xacro:property name="M_PI" value="3.1415926535897931" />
 	<!-- ================================= -->
 	<!-- Define Gazebo tags for every link -->
 	<gazebo reference="base_link1">
@@ -20,6 +21,18 @@
 	
 	<gazebo reference="prop_back_left">
 		<material>Gazebo/Red</material>
+	</gazebo>
+
+	<gazebo reference="prop_back_left">
+		<material>Gazebo/Red</material>
+	</gazebo>
+
+	<gazebo reference="vertical_camera_link">
+		<material>Gazebo/Green</material>
+	</gazebo>
+
+	<gazebo reference="front_camera_link">
+		<material>Gazebo/Green</material>
 	</gazebo>
 
 	<gazebo>
@@ -106,6 +119,120 @@
 		</plugin>
 	</gazebo>
 
+	<gazebo reference="vertical_camera_link">
+		<sensor type="camera" name="vertical_camera">
+			<update_rate>30</update_rate>
+			<camera name="vertical">
+				<horizontal_fov>${47.5 * M_PI/180.0}</horizontal_fov>
+				
+				<image>
+					<width>176</width>
+					<height>144</height>
+					<format>R8G8B8</format>
+				</image>
+				<clip>
+					<near>0.02</near>
+					<far>300</far>
+				</clip>
+				<noise>
+					<type>gaussian</type>
+					<mean>0</mean>
+					<stddev>0.007</stddev>
+				</noise>
+			</camera>
+			
+			<plugin name="vertical_camera_controller" filename="libgazebo_ros_camera.so" >
+				<robotNameSpace>/Parrot</robotNameSpace>
+				<alwaysOn>true</alwaysOn>
+				<updateRate>0.0</updateRate>
+				<cameraName>/vertical_camera</cameraName>
+				<imageTopicName>image_raw</imageTopicName>
+				<cameraInfoTopicName>camera_info</cameraInfoTopicName>
+				<frameName>camera_link</frameName>
+				<hackBaseline>0.07</hackBaseline>
+				<distortionK1>0.0</distortionK1>
+				<distortionK2>0.0</distortionK2>
+				<distortionK3>0.0</distortionK3>
+				<distortionT1>0.0</distortionT1>
+				<distortionT2>0.0</distortionT2>
+			</plugin>
+		</sensor>
+    </gazebo>
+
+	<gazebo reference="front_camera_link">
+		<sensor type="camera" name="front_camera">
+			<update_rate>30</update_rate>
+			<camera name="front">
+				<!--horizontal_fov>1.3962634</horizontal_fov-->
+				<horizontal_fov>${73.5 * M_PI/180.0}</horizontal_fov>
+				<image>
+					<width>640</width>
+					<height>480</height>
+					<format>R8G8B8</format>
+				</image>
+				<clip>
+					<near>0.02</near>
+					<far>300</far>
+				</clip>
+				<noise>
+					<type>gaussian</type>
+					<mean>0</mean>
+					<stddev>0.001</stddev>
+				</noise>
+			</camera>
+			
+			<plugin name="front_camera_controller" filename="libgazebo_ros_camera.so" >
+				<robotNameSpace>/Parrot</robotNameSpace>
+				<alwaysOn>true</alwaysOn>
+				<updateRate>0.0</updateRate>
+				<cameraName>/front_camera</cameraName>
+				<imageTopicName>image_raw</imageTopicName>
+				<cameraInfoTopicName>camera_info</cameraInfoTopicName>
+				<frameName>camera_link</frameName>
+				<hackBaseline>0.07</hackBaseline>
+				<distortionK1>0.0</distortionK1>
+				<distortionK2>0.0</distortionK2>
+				<distortionK3>0.0</distortionK3>
+				<distortionT1>0.0</distortionT1>
+				<distortionT2>0.0</distortionT2>
+			</plugin>
+		</sensor>
+    </gazebo>
+
+	<gazebo reference="gyro_link">
+      <sensor type="imu" name="imu">
+      <always_on>true</always_on>
+      <update_rate>50</update_rate>
+      <visualize>true</visualize>
+      <imu>
+          <noise>
+            <type>gaussian</type>
+            <rate>
+              <mean>0.0</mean>
+              <stddev>0</stddev> <!-- 0.25 x 0.25 (deg/s) -->
+              <bias_mean>0.0</bias_mean>
+              <bias_stddev>0.0</bias_stddev>
+            </rate>
+            <accel> <!-- not used in the plugin and real robot, hence using tutorial values -->
+              <mean>0.0</mean>
+              <stddev>0</stddev>
+              <bias_mean>0.0</bias_mean>
+              <bias_stddev>0.000</bias_stddev>
+            </accel>
+          </noise>
+        </imu>
+		<plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+			<topicName>imu</topicName>
+			<bodyName>gyro_link</bodyName>
+			<updateRateHZ>10.0</updateRateHZ>
+			<gaussianNoise>0.0</gaussianNoise>
+			<xyzOffset>0 0 0</xyzOffset>
+			<rpyOffset>0 0 0</rpyOffset>
+			<frameName>gyro_link</frameName>
+			<initialOrientationAsReference>false</initialOrientationAsReference>
+		</plugin>
+      </sensor>
+    </gazebo>
 
 	<gazebo>
 		<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">

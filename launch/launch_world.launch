@@ -17,7 +17,8 @@
         <arg name="z" default="0.01"/>
         <arg name="roll" default="0.0"/>
         <arg name="pitch" default="0.0"/>
-        <arg name="yaw" default="-1.5969"/>
+        <!--arg name="yaw" default="-1.5969"/-->
+        <arg name="yaw" default="3.14159263"/>
 
         <arg name="robot_name" value="drone_parrot"/>
 		
